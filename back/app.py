@@ -180,46 +180,46 @@ def alternativas(id = None):
             return jsonify(alternativas), 200
 
     if request.method == 'POST':
-        enunciado = request.json.get('enunciado', None)
-        prueba_id = request.json.get('prueba_id', None)
+        correcta = request.json.get('correcta', None)
+        pregunta_id = request.json.get('pregunta_id', None)
         
-        preguntas = Pruebas()
+        alternativas = Alternativas()
         
-        preguntas.enunciado = enunciado 
-        preguntas.prueba_id = prueba_id 
+        alternativas.enunciado = enunciado 
+        alternativas.pregunta_id = pregunta_id 
         
-        db.session.add(preguntas) 
+        db.session.add(alternativas) 
         db.session.commit()  
 
-        return jsonify(preguntas.serialize()), 201
+        return jsonify(alternativas.serialize()), 201
     
     if request.method == 'PUT':
-        enunciado = request.json.get('enunciado', None)
-        prueba_id = request.json.get('prueba_id', None)
+        correcta = request.json.get('correcta', None)
+        pregunta_id = request.json.get('pregunta_id', None)
 
-        if not enunciado or enunciado == "":
-            return jsonify({"msg":"Ingresar enunciado de prueba"}), 400
-        if not prueba_id or prueba_id == "":
-            return jsonify({"msg":"Ingresar a que prueba pertenece"}), 400
+        if not correcta or correcta == "":
+            return jsonify({"msg":"Ingresar respuesta correcta de la pregunta"}), 400
+        if not pregunta_id or pregunta_id == "":
+            return jsonify({"msg":"Identificar a qué pregunta corresponde esta respuesta correcta"}), 400
 
-        preguntas = Preguntas.query.get(id)
-        if not preguntas:
-            return jsonify({"msg": "Pregunta no encontrada"}), 404
+        alternativas = Alternativas.query.get(id)
+        if not alternativas:
+            return jsonify({"msg": "alternativa correcta no encontrada"}), 404
          
-        preguntas.enunciado = enunciado 
-        preguntas.prueba_id = prueba_id 
+        alternativas.correcta = correcta 
+        alternativas.pregunta_id = pregunta_id 
         
         db.session.commit()  
 
-        return jsonify(preguntas.serialize()), 201
+        return jsonify(alternativas.serialize()), 201
 
     if request.method == 'DELETE':
-        preguntas = Preguntas.query.get(id)
-        if not preguntas:
-            return jsonify({"msg": "Pregunta no encontrada"}), 404
-        db.session.delete(preguntas)
+        alternativas = Alternativas.query.get(id)
+        if not alternativas:
+            return jsonify({"msg": "Respuesta no encontrada"}), 404
+        db.session.delete(alternativas)
         db.session.commit()
-        return jsonify({"msg":"Pregunta eliminada"}), 200
+        return jsonify({"msg":"Respuesta eliminada"}), 200
 
 
 
