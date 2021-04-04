@@ -221,9 +221,64 @@ def alternativas(id = None):
         db.session.commit()
         return jsonify({"msg":"Respuesta eliminada"}), 200
 
+@app.route('/distraccion', methods=['GET', 'POST'])
+@app.route('/distraccion/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+# @jwt_required
+def distraccion(id = None):
+    if request.method == 'GET':
+        if id is not None:
+            distraccion = Distraccion.query.get(id)
+            if distraccion:
+                return jsonify(distraccion.serialize()), 200
+            else:
+                return jsonify({"msg": "Distraccion no existe"}), 404
+        else:
+            distracciones = Distraccion.query.all()
+            print("aqui!!")
+            distracciones = list(map(lambda distraccion: distraccion.serialize(), distracciones))
+            return jsonify(distracciones), 200
 
+    if request.method == 'POST':
+        incorrecta = request.json.get('incorrecta', None)
+        alternativa_id = request.json.get('aleternativa_id', None)
+        
+        distracciones = Distraccion()
+        
+        distracciones.incorrecta = incorrecta 
+        distracciones.alternativa_id = alternativa_id 
+        
+        db.session.add(distracciones) 
+        db.session.commit()  
 
+        return jsonify(distracciones.serialize()), 201
+    
+    if request.method == 'PUT':
+        incorrecta = request.json.get('incorrecta', None)
+        alternativa_id = request.json.get('alternativa_id', None)
 
+        if not incorrecta or incorrecta == "":
+            return jsonify({"msg":"Ingresar respuesta incorrecta de la pregunta"}), 400
+        if not alternativa_id or alternativa_id == "":
+            return jsonify({"msg":"Identificar a qué pregunta corresponde esta respuesta incorrecta"}), 400
+
+        distracciones = Distraccion.query.get(id)
+        if not distracciones:
+            return jsonify({"msg": "alternativa incorrecta no encontrada"}), 404
+         
+        distracciones.incorrecta = incorrecta 
+        distracciones.aleternativa_id = alternativa_id 
+        
+        db.session.commit()  
+
+        return jsonify(distracciones.serialize()), 201
+
+    if request.method == 'DELETE':
+        distracciones = Distraccion.query.get(id)
+        if not distracciones:
+            return jsonify({"msg": "Respuesta no encontrada"}), 404
+        db.session.delete(distracciones)
+        db.session.commit()
+        return jsonify({"msg":"Respuesta eliminada"}), 200
 
 @manager.command
 def cargarprueba():
