@@ -1,0 +1,97 @@
+PASO A PASO REALIZACION DE ESTE PROYECTO
+
+ETAPA 1: CREACION DE LA APLICACION
+    1. CREAR PROYECTO // TERMINAL: npx create-react-app pffront
+
+    2. INSTALAR LIBRERIAS // TERMINAL: npm i jquery@3.4.1 popper.js bootstrap react-router-dom @fortawesome/fontawesome-free@5.1.0-9 --save
+
+    ************************
+        OPCIONAL: HACER PUSH EN REPOSITORIO GUTHUB
+        - git init
+        + git add .
+        + git commit -m “asd”
+        - git remote add origin repository
+        + git push origin master
+
+        Realizar '+' en orden y repetidas veces cada vez que se quiere resubir el archivo en GitHub.
+        En caso de realizar el trabajo en equipo recordar hacer realizar un pull (git pull origin master)
+    ************************
+
+    3. Borrar archivos en scr:
+        - App.css
+        - App.js
+        - App.test.js
+        - logo.svg
+        - setupTest.js
+
+    4. Crear carpetas en src:
+        - components (para almacenar componentes)
+        - store (inyeccion de contenidos)
+        - views (para almacenar las diferentes paginas alojadas en la aplicacion)
+
+    5.
+        a. En scr crear:
+            - layouts.js (este archivo contendra un componente con las rutas de la aplicacion)
+                <BrowserRouter> <Switch> <Route>
+        b. En scr/store crear:
+            - flux.js
+            - appContext.js
+
+ETAPA 2: CONFIGURACIONES INICIALES DE LOS ARCHIVOS    
+    6. En index.js:
+        - Configurar importaciones en index.js
+            - import 'bootstrap/dist/css/bootstrap.min.css';
+            - import '@fortawesome/fontawesome-free/css/all.css';
+            - import 'jquery';
+            - import 'popper.js';
+            - import 'bootstrap';
+        - Modificar la importacion de app.js (borrado en 3) y configurarlo por layouts (agregado en 5)
+        y en el cuerpo.
+
+    ************************
+        RECORDATORIO: LOS COMPONENTES/VIEWS A USAR TIENEN LA SIGUIENTE ESTRUCTURA:
+            import React from 'react';
+            import Loquequieratraer from 'direcciondeloquequieratraer';
+
+            const Nombre = props => {
+            return (
+                ...
+                lo que sea
+                ...
+                )
+            }
+
+            export default Nombre;  
+    ************************
+
+    7. En scr/views crear:
+        - home.js
+        - notfound.js
+
+        Llevar cada uno a Layouts
+
+    PARA ESTE PUNTO UNO YA PUEDE COMPILAR EL ARCHIVO Y PUEDE VER EL CONTENIDO EN HOME O EN NOTFOUND.
+
+    ************************
+        POSIBLE ERROR:
+            "There might be a problem with the project dependency tree.
+            It is likely not a bug in Create React App, but something you need to fix locally."
+        
+        HAY ALGUNAS VECES QUE AL QUERER CORRER EL COMPILADO NO RESULTA, PARA ESTO HACER:
+            1. Crear archivo en carpeta principal archivo .env
+            2. Copiar lo siguiente: SKIP_PREFLIGHT_CHECK=true
+            3. npm run start
+
+        POR LO GENERAL CUANDO EXISTE UN ERROR APARECE UN LARGO COMENTARIO QUE TE DA UN PASO A PASO
+        PARA RESOLVER PROBLEMAS MANUALMENTE, LEERLO!
+    ************************
+
+ETAPA 3: PREPARACION DE LA INYECCION DE CONTENIDOS
+
+    8. En flux.js:
+        
+
+
+
+
+
