@@ -57,7 +57,6 @@ def pruebas(id = None):
                 return jsonify({"msg": "Prueba no existe"}), 404
         else:
             pruebas = Pruebas.query.all()
-            print("aqui!!")
             pruebas = list(map(lambda prueba: prueba.serialize(), pruebas))
             return jsonify(pruebas), 200
 
@@ -346,7 +345,7 @@ def cargaralternativas():
     db.session.add(alternativa)
     db.session.commit()
 
-    alternativa = Alternativa()
+    alternativa = Alternativas()
     alternativa.correcta = "Respuesta correcta a Pregunta 2 Prueba 1"
     alternativa.pregunta_id = "2"
 
@@ -555,7 +554,7 @@ def cargardistraccion():
 
     print("Distracciones Creadas")
 
-aun no
+# aun no
     # @manager.command
     # def loadroles():
     #     role = Roles()
