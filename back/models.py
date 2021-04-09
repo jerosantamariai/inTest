@@ -26,7 +26,6 @@ class Usuarios (db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
     role = db.relationship(Roles)
     
-
     def serialize(self):
         return {
             "id": self.id,
@@ -45,52 +44,111 @@ class Pruebas (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tipo = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(150), nullable=False)
+    preguntass = db.relationship('Preguntas', backref='tests', lazy=True)
 
     def serialize(self):
         return {
             "id": self.id,
             "tipo": self.tipo,
             "descripcion": self.descripcion,
+            "preguntass": self.preguntass.serialize()
         }
 
 class Preguntas (db.Model):
     __tablename__ = 'preguntas'
     id = db.Column(db.Integer, primary_key=True)
     enunciado = db.Column(db.String(100), nullable=False)
-    prueba_id = db.Column(db.Integer, db.ForeignKey('pruebas.id'), nullable=False)
-    prueba = db.relationship(Pruebas)
+    prueba_id = db.Column(db.Integer, db.ForeignKey('pruebas.id'))
+    alternativass = db.relationship('Alternativas', backref='duda', lazy=True)
 
     def serialize(self):
         return {
                 "id": self.id,
                 "enunciado": self.enunciado,
-                "prueba": self.prueba.serialize(),
+                "alternativass": self.alternativass.serialize(),
             }
 
 class Alternativas (db.Model):
     __tablename__ = 'alternativas'
     id = db.Column(db.Integer, primary_key=True)
     correcta = db.Column(db.String(100), nullable=False)
-    pregunta_id = db.Column(db.Integer, db.ForeignKey('preguntas.id'), nullable=False)
-    pregunta = db.relationship(Preguntas)
+    pregunta_id = db.Column(db.Integer, db.ForeignKey('preguntas.id'))
+    distracciones = db.relationship('Distraccion', backref='incorrectas', lazy=True)
 
     def serialize(self):
         return {
                 "id": self.id,
                 "correcta": self.correcta,
-                "pregunta": self.pregunta.serialize(),
+                "distracciones": self.distracciones.serialize(),
             }
 
 class Distraccion (db.Model):
     __tablename__ = 'distraccion'
     id = db.Column(db.Integer, primary_key=True)
     incorrecta = db.Column(db.String(100), nullable=False)
-    alternativa_id = db.Column(db.Integer, db.ForeignKey('alternativas.id'), nullable=False)
-    alternativa = db.relationship(Alternativas)
+    alternativa_id = db.Column(db.Integer, db.ForeignKey('alternativas.id'))
 
     def serialize(self):
         return {
                 "id": self.id,
-                "correcta": self.correcta,
-                "alternativa": self.alternativa.serialize(),
+                "incorrecta": self.incorrecta,
             }
+
+# -----------------------
+
+
+
+# class Pruebas (db.Model):
+#     __tablename__ = 'pruebas'
+#     id = db.Column(db.Integer, primary_key=True)
+#     tipo = db.Column(db.String(50), nullable=False)
+#     descripcion = db.Column(db.String(150), nullable=False)
+
+#     def serialize(self):
+#         return {
+#             "id": self.id,
+#             "tipo": self.tipo,
+#             "descripcion": self.descripcion,
+#         }
+
+# class Preguntas (db.Model):
+#     __tablename__ = 'preguntas'
+#     id = db.Column(db.Integer, primary_key=True)
+#     enunciado = db.Column(db.String(100), nullable=False)
+#     prueba_id = db.Column(db.Integer, db.ForeignKey('pruebas.id'), nullable=False)
+#     prueba = db.relationship(Pruebas)
+
+#     def serialize(self):
+#         return {
+#                 "id": self.id,
+#                 "enunciado": self.enunciado,
+#                 "prueba": self.prueba.serialize(),
+#             }
+
+# class Alternativas (db.Model):
+#     __tablename__ = 'alternativas'
+#     id = db.Column(db.Integer, primary_key=True)
+#     correcta = db.Column(db.String(100), nullable=False)
+#     pregunta_id = db.Column(db.Integer, db.ForeignKey('preguntas.id'), nullable=False)
+#     pregunta = db.relationship(Preguntas)
+
+#     def serialize(self):
+#         return {
+#                 "id": self.id,
+#                 "correcta": self.correcta,
+#                 "pregunta": self.pregunta.serialize(),
+#             }
+
+# class Distraccion (db.Model):
+#     __tablename__ = 'distraccion'
+#     id = db.Column(db.Integer, primary_key=True)
+#     incorrecta = db.Column(db.String(100), nullable=False)
+#     alternativa_id = db.Column(db.Integer, db.ForeignKey('alternativas.id'), nullable=False)
+#     alternativa = db.relationship(Alternativas)
+
+#     def serialize(self):
+#         return {
+#                 "id": self.id,
+#                 "correcta": self.correcta,
+#                 "alternativa": self.alternativa.serialize(),
+#             }

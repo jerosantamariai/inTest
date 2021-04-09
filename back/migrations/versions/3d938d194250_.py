@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9f31743ad7ae
+Revision ID: 3d938d194250
 Revises: 
-Create Date: 2021-04-04 17:05:20.813139
+Create Date: 2021-04-08 19:49:38.310136
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9f31743ad7ae'
+revision = '3d938d194250'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -33,7 +33,7 @@ def upgrade():
     op.create_table('preguntas',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('enunciado', sa.String(length=100), nullable=False),
-    sa.Column('prueba_id', sa.Integer(), nullable=False),
+    sa.Column('prueba_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['prueba_id'], ['pruebas.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -53,14 +53,14 @@ def upgrade():
     op.create_table('alternativas',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('correcta', sa.String(length=100), nullable=False),
-    sa.Column('pregunta_id', sa.Integer(), nullable=False),
+    sa.Column('pregunta_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['pregunta_id'], ['preguntas.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('distraccion',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('incorrecta', sa.String(length=100), nullable=False),
-    sa.Column('alternativa_id', sa.Integer(), nullable=False),
+    sa.Column('alternativa_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['alternativa_id'], ['alternativas.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
